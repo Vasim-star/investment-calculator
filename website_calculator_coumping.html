@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Investment Calculator</h2>
+        <label for="initial">Initial Investment (₹):</label>
+        <input type="number" id="initial" placeholder="Enter initial investment">
+
+        <label for="monthly">Monthly Investment (₹):</label>
+        <input type="number" id="monthly" placeholder="Enter monthly investment">
+
+        <label for="years">Number of Years:</label>
+        <input type="number" id="years" placeholder="Enter investment duration in years">
+
+        <label for="rate">Annual Rate of Return (%):</label>
+        <input type="number" id="rate" placeholder="Enter annual return rate">
+
+        <button onclick="calculateFutureValue()">Calculate</button>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function calculateFutureValue() {
+            // Get inputs
+            const P = parseFloat(document.getElementById('initial').value) || 0;
+            const PMT = parseFloat(document.getElementById('monthly').value) || 0;
+            const years = parseFloat(document.getElementById('years').value) || 0;
+            const rate = parseFloat(document.getElementById('rate').value) || 0;
+
+            // Parameters for the formula
+            const r = rate / 100; // Convert rate to decimal
+            const n = 12; // Compounding periods per year
+            const t = years;
+
+            // Calculate future value
+            const FV_lump_sum = P * Math.pow(1 + r / n, n * t);
+            const FV_monthly = PMT * ((Math.pow(1 + r / n, n * t) - 1) * (1 + r / n)) / (r / n);
+            const FV_total = FV_lump_sum + FV_monthly;
+
+            // Display result
+            document.getElementById('result').innerHTML = `
+                Future Value of Initial Investment: ₹${FV_lump_sum.toFixed(2)}<br>
+                Future Value of Monthly Investments: ₹${FV_monthly.toFixed(2)}<br>
+                Total Future Value: ₹${FV_total.toFixed(2)}
+            `;
+        }
+    </script>
+</body>
+</html>
